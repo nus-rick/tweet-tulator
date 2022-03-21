@@ -23,7 +23,7 @@ ReactDOM.render(
     <BrowserRouter>
       <Routes>
         <Route path="/messages" element={<Messages />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Login />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,

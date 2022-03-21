@@ -50,7 +50,7 @@ export default function Messages() {
     const data = new FormData(event.currentTarget);
 
     if (/^\d+$/.test(data.get('bodyText') as string)) {
-      setFormInvalid(true);
+      setFormInvalid(false);
 
       const res = await axios.post(
         MESSAGES_API,
@@ -63,9 +63,10 @@ export default function Messages() {
       if (res.status === 200) {
         const res = await axios.get(MESSAGES_API);
         setMessages(res.data.data);
+        setOpenCreateMessageDialog(false);
       }
     } else {
-      setFormInvalid(false);
+      setFormInvalid(true);
     }
   };
 
@@ -87,7 +88,7 @@ export default function Messages() {
 
   const handlLogout = () => {
     localStorage.removeItem('currentUser');
-    navigate('../login', { replace: true });
+    navigate('../', { replace: true });
   }
 
   return (
@@ -101,7 +102,7 @@ export default function Messages() {
         </Grid>
         <Grid item md={4}>
           {currentUser && (<Button variant="outlined" onClick={handlLogout}>Logout</Button>)}
-          {!currentUser && (<Button variant="outlined" onClick={() => navigate('../login', { replace: true })}>Login</Button>)}
+          {!currentUser && (<Button variant="outlined" onClick={() => navigate('../', { replace: true })}>Login</Button>)}
         </Grid>
       </Grid>
 
@@ -132,7 +133,7 @@ export default function Messages() {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              Submit
             </Button>
           </Box>
         </DialogContent>

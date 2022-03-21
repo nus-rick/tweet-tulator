@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardContent, Dialog, DialogContent, DialogContentText, DialogTitle, TextField, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, Dialog, DialogContent, DialogTitle, Grid, TextField, Typography } from '@mui/material';
 import { useState, FC } from 'react';
 
 type Props = {
@@ -71,6 +71,7 @@ export const Message: FC<Props> = props => {
     setFormInvalid(false);
     if (/^[+|\-|*|/]\d+$/.test(replyMessage)) {
       onReplyMessage(replyMessage, currentMessage._id);
+      setOpenReplyDialog(false);
     } else {
       setFormInvalid(true);
     }
@@ -90,25 +91,30 @@ export const Message: FC<Props> = props => {
     <div>
       <Card sx={{ ml: msClass }} variant="outlined">
         <CardContent>
-          <Typography color="text.secondary">
-            Author: { currentMessage.author }
-          </Typography>
-          <Typography color="text.secondary">
-            Message: { currentMessage.bodyText }
-          </Typography>
-          <Typography color="text.secondary">
-            {!isNaN(messageResult) ? `Result: ${messageResult}` : ''}
-          </Typography>
-          {canReply() && (<Button variant="contained" onClick={handleClickOpenReplyDialog}>Reply</Button>)}
+          <Grid container spacing={2}>
+            <Grid item sm={3}>
+              <Typography color="text.secondary">
+                Author: { currentMessage.author }
+              </Typography>
+            </Grid>
+            <Grid item sm={3}>
+              <Typography color="text.secondary">
+                Message: { currentMessage.bodyText }
+              </Typography>
+            </Grid>
+            <Grid item sm={3}>
+              <Typography color="text.secondary">
+                {!isNaN(messageResult) ? `Result: ${messageResult}` : ''}
+              </Typography>
+            </Grid>
+            <Grid item sm={3}>
+              {canReply() && (<Button variant="contained" onClick={handleClickOpenReplyDialog}>Reply</Button>)}
+            </Grid>
+          </Grid>
 
           <Dialog open={open} onClose={handleClickCloseReplyDialog}>
-            <DialogTitle>Subscribe</DialogTitle>
+            <DialogTitle>Reply</DialogTitle>
             <DialogContent>
-              <DialogContentText>
-                To subscribe to this website, please enter your email address here. We
-                will send updates occasionally.
-              </DialogContentText>
-
               <Box component="form" onSubmit={handleSubmitReply} noValidate sx={{ mt: 1 }}>
                 <TextField
                   margin="normal"
@@ -140,7 +146,7 @@ export const Message: FC<Props> = props => {
                   variant="contained"
                   sx={{ mt: 3, mb: 2 }}
                 >
-                  Sign In
+                  Submit
                 </Button>
               </Box>
             </DialogContent>
