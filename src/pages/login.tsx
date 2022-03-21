@@ -8,6 +8,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { USERS_API } from '../Api';
 
 function Copyright(props: any) {
   return (
@@ -29,7 +30,7 @@ export default function Login() {
     const data = new FormData(event.currentTarget);
 
     const res = await axios.post(
-      `${process.env.REACT_APP_API_URL}/api/v1/users`,
+      USERS_API,
       {
         username: data.get('username'),
         password: data.get('password'),

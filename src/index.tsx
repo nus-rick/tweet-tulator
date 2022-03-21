@@ -11,6 +11,12 @@ import {
 import Login from './pages/login';
 import Messages from './pages/messages';
 
+import axios from 'axios';
+
+if (process.env.NODE_ENV !== 'production') {
+  axios.defaults.baseURL = process.env.REACT_APP_API_URL;
+}
+
 const rootElement = document.getElementById("root");
 ReactDOM.render(
   <React.StrictMode>

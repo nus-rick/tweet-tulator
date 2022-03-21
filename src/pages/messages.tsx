@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Message } from '../components/message';
 import { Box, Button, Container, Dialog, DialogContent, DialogTitle, Grid, TextField, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { MESSAGES_API } from '../Api';
 
 export default function Messages() {
   const [messages, setMessages] = useState([]);
@@ -23,7 +24,7 @@ export default function Messages() {
 
   useEffect(() => {
     async function fetchMessages() {
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/messages`);
+      const res = await axios.get(MESSAGES_API);
       setMessages(res.data.data);
     }
 
@@ -52,7 +53,7 @@ export default function Messages() {
       setFormInvalid(true);
 
       const res = await axios.post(
-        `${process.env.REACT_APP_API_URL}/api/v1/messages`,
+        MESSAGES_API,
         {
           author: currentUser.username,
           bodyText: data.get('bodyText'),
@@ -60,7 +61,7 @@ export default function Messages() {
       );
 
       if (res.status === 200) {
-        const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/messages`);
+        const res = await axios.get(MESSAGES_API);
         setMessages(res.data.data);
       }
     } else {
@@ -70,7 +71,7 @@ export default function Messages() {
 
   const handleReplyMessage = async (bodyText: string, parentId: string) => {
     const res = await axios.post(
-      `${process.env.REACT_APP_API_URL}/api/v1/messages`,
+      MESSAGES_API,
       {
         author: currentUser.username,
         bodyText: bodyText,
@@ -79,7 +80,7 @@ export default function Messages() {
     );
 
     if (res.status === 200) {
-      const res = await axios.get(`${process.env.REACT_APP_API_URL}/api/v1/messages`);
+      const res = await axios.get(MESSAGES_API);
       setMessages(res.data.data);
     }
   };
