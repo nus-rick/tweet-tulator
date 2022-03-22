@@ -6,7 +6,6 @@
   "scripts": {
     "start": "node build/index.js",
     "dev": "nodemon src/index.ts --watch",
-    "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
     "build": "tsc --outDir ../api && cp -R node_modules ../api/ && cp package.json ../api/"
   },
   "keywords": [],

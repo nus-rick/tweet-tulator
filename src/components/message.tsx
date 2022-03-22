@@ -52,7 +52,7 @@ export const Message: FC<Props> = props => {
       default:
         break;
     }
-    return parseFloat(result.toString());
+    return parseFloat(result.toFixed(2));
   };
 
   let messageResult = parseFloat(parentMessage?.bodyText);

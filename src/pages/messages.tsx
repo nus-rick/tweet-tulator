@@ -9,6 +9,7 @@ export default function Messages() {
   const [messages, setMessages] = useState([]);
   const navigate = useNavigate();
   const [formInvalid, setFormInvalid] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
 
   const currentUser = localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser') || '') : null;
 
@@ -25,7 +26,12 @@ export default function Messages() {
   useEffect(() => {
     async function fetchMessages() {
       const res = await axios.get(MESSAGES_API);
-      setMessages(res.data.data);
+
+      if (res.data.status === 200) {
+        setMessages(res.data.data);
+      } else {
+        setErrorMessage(res.data.message);
+      }
     }
 
     fetchMessages()
@@ -60,10 +66,12 @@ export default function Messages() {
         }
       );
 
-      if (res.status === 200) {
+      if (res.data.status === 200) {
         const res = await axios.get(MESSAGES_API);
         setMessages(res.data.data);
         setOpenCreateMessageDialog(false);
+      } else {
+        setErrorMessage(res.data.message);
       }
     } else {
       setFormInvalid(true);
@@ -80,9 +88,11 @@ export default function Messages() {
       }
     );
 
-    if (res.status === 200) {
+    if (res.data.status === 200) {
       const res = await axios.get(MESSAGES_API);
       setMessages(res.data.data);
+    } else {
+      setErrorMessage(res.data.message);
     }
   };
 
@@ -105,6 +115,12 @@ export default function Messages() {
           {!currentUser && (<Button variant="outlined" onClick={() => navigate('../', { replace: true })}>Login</Button>)}
         </Grid>
       </Grid>
+
+      {errorMessage && (
+        <Typography color="error.main">
+          { errorMessage }
+        </Typography>
+      )}
 
       <h3 className="">Messages:</h3>
       { messages && renderMessages() }

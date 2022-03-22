@@ -12,7 +12,14 @@ const userSchema = new mongoose.Schema<IUser>(
       required: true
     }
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+    toJSON: {
+      transform: (_doc: any, ret: { password: string; }) => {
+        delete ret.password;
+      }
+    }
+  },
 );
 
 const UserModel = mongoose.model('users', userSchema);

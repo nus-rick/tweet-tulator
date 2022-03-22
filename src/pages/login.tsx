@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState, FormEvent } from 'react';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -24,8 +24,9 @@ const theme = createTheme();
 
 export default function Login() {
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState(null);
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
@@ -37,9 +38,11 @@ export default function Login() {
       }
     );
 
-    if (res.status === 200) {
+    if (res.data.status === 200) {
       localStorage.setItem('currentUser', JSON.stringify(res.data.data));
       navigate("../messages", { replace: true });
+    } else {
+      setErrorMessage(res.data.message)
     }
   };
 
@@ -78,6 +81,11 @@ export default function Login() {
               id="password"
               autoComplete="current-password"
             />
+            {errorMessage && (
+              <Typography color="error.main">
+                { errorMessage }
+              </Typography>
+            )}
             <Button
               type="submit"
               fullWidth
